@@ -5,8 +5,11 @@
 # Version format. We don't use this, so let it just be less confusing on UI.
 version: "#{build}"
 
-# Allow filenames longer than 260 characters (what year is it?!).
-init: git config --system core.longpaths true
+init:
+  # Automatically convert between CRLF on filesystem and LF in repository.
+  - git config --global core.autocrlf true
+  # Allow filenames longer than 260 characters (what year is it?!).
+  - git config --system core.longpaths true
 
 environment:
   FLUTTER_SDK_ROOT: "C:\\flutter"
@@ -60,9 +63,6 @@ build_script:
   - ps: popd
 
 test_script:
-  # Workaround for fastlane generating README.md with LF instead of CRLF.
-  # TODO(dotdoom): file a bug.
-  - git add flutter/fastlane/README.md
   - bundle exec fastlane ensure_clean_git
 
 branches:
